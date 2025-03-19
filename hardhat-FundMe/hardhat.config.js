@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config()
 require("hardhat-deploy")
+require("hardhat-gas-reporter")
 
 // task("accounts", "Prints the list of accounts", async (_, hre) => {
 //     const accounts = await hre.ethers.getSigners()
@@ -44,13 +45,13 @@ module.exports = {
     },
 
     gasReporter: {
-        enabled: false,
+        enabled: true,
         outputFile: "gas-report.txt",
         noColors: true,
         currency: "USD",
-        coinmarketcap: COINMARKETCAP_API_KEY,
-        gasPriceApi:
-            "https://api.coinmarketcap.com/v1/cryptocurrency/quotes/latest",
+        //coinmarketcap: COINMARKETCAP_API_KEY,
+        //gasPriceApi:
+        //  "https://api.coinmarketcap.com/v1/cryptocurrency/quotes/latest",
     },
 
     namedAccounts: {

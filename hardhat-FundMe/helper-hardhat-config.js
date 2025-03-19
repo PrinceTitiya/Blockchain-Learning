@@ -7,7 +7,6 @@ const networkConfig = {
         name: "polygon",
         ethUsdPriceFeedAddress: "0xF9680D99D6C9589e2a93a78A04A279e509205945",
     },
-    //1337
 }
 
 const DevelopmentChains = ["hardhat", "localhost"]

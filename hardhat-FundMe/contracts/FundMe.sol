@@ -8,20 +8,29 @@ import "./PriceConverter.sol";
 error FundMe__NotOwner();
 
 contract FundMe {
+    // Type Declarations
     using PriceConverter for uint256;
 
-    uint256 public constant MINIMUM_USD = 5 * 1e18;
+    // State variables
+    uint256 public constant MINIMUM_USD = 50 * 1e18;
     address private immutable i_owner;
     AggregatorV3Interface public s_priceFeed;
-
     mapping(address => uint256) public addressToAmountFunded;
     address[] public funders;
 
+    // Constructor
     constructor(address priceFeedAddress) {
         i_owner = msg.sender;
         s_priceFeed = AggregatorV3Interface(priceFeedAddress);
     }
 
+    // Modifier
+    modifier onlyOwner() {
+        if (msg.sender != i_owner) revert FundMe__NotOwner();
+        _;
+    }
+
+    // Fund function
     function fund() public payable {
         require(
             msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
@@ -31,20 +40,23 @@ contract FundMe {
         funders.push(msg.sender);
     }
 
+    // Withdraw function
     function withdraw() public onlyOwner {
-        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
-            address funder = funders[funderIndex];
-            addressToAmountFunded[funder] = 0;
-        }
-        // funders = new address      (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
-        // require(callSuccess, "Call failed");
+    // Reset funders' balances
+    for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
+        address funder = funders[funderIndex];
+        addressToAmountFunded[funder] = 0;
     }
 
-    modifier onlyOwner() {
-        if (msg.sender != i_owner) revert FundMe__NotOwner();
-        _;
-    }
+    // // Reset funders array properly
+    funders = new address[](0);
 
+    // Transfer all funds to the owner
+    (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+    require(callSuccess, "Call failed");
+}
+
+    // Getter functions
     function getOwner() public view returns (address) {
         return i_owner;
     }
@@ -55,13 +67,5 @@ contract FundMe {
 
     function getBalance() public view returns (uint256) {
         return address(this).balance;
-    }
-
-    receive() external payable {
-        fund();
-    }
-
-    fallback() external payable {
-        fund();
     }
 }

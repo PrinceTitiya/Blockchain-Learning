@@ -1,4 +1,12 @@
 {
+  "name": "hardhat-FundMe",
+  "author": "Prince",
+  "version": "1.0.0",
+  "description": "A Hardhat project for the FundMe contract",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PrinceTitiya/Blockchain-Learning/tree/main/hardhat-FundMe",
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",

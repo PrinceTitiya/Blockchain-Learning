@@ -7,7 +7,7 @@ DevelopmentChains.includes(network.name) //only runs on the testnet
     : describe("FundMe", async function () {
           let fundMe
           let delpoyer
-          let sendValue = ethers.parseEther("1")
+          let sendValue = ethers.parseEther("0.0001")
           beforeEach(async function () {
               deployer = (await getNamedAccounts()).deployer
               //await deployments.fixture(["all"]) // Deploy contracts
@@ -19,6 +19,8 @@ DevelopmentChains.includes(network.name) //only runs on the testnet
                   fundMeDeployment.address,
                   signer
               )
+              console.log(`Deployer (test signer): ${deployer}`)
+              console.log(`Owner (on contract): ${await fundMe.getOwner()}`)
           })
 
           it("allows to people to fund and withdraw", async function () {

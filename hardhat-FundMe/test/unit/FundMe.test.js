@@ -2,7 +2,7 @@ const { deployments, ethers, getNamedAccounts } = require("hardhat")
 const { assert, expect } = require("chai")
 const { DevelopmentChains } = require("../../helper-hardhat-config")
 
-!DevelopmentChains.includes(network.name)
+!DevelopmentChains.includes(network.name) // only runs on the local node
     ? describe.skip
     : describe("FundMe", function () {
           let fundMe
@@ -95,6 +95,7 @@ const { DevelopmentChains } = require("../../helper-hardhat-config")
 
                   const { gasUsed, gasPrice } = transactionReceipt //pull out objects from the transactionReceipt
                   const gasCost = gasUsed * gasPrice
+
                   const endingFundMeBalance = await ethers.provider.getBalance(
                       fundMeAddress
                   )
